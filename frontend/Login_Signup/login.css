@@ -7,6 +7,8 @@ html,body{
     align-items: center;
     width: 100%;
     height: 100vh;
+    font-family: 'Montserrat';
+    font-size: small;
    /* background-color:rgb(52, 86, 130);*/
     
     background: url("5.jpg") no-repeat center; 
@@ -37,7 +39,7 @@ html,body{
   }
   */
 #box{
-    height: 200px;
+    height: 250px;
     width: 1000px;
     border: 4px white solid;
    /* border-radius: 5px; */
@@ -106,6 +108,36 @@ html,body{
   cursor: pointer;
   border: 1px black solid;
 }
+/* social */
+
+.social-login{
+    position:relative;
+    float: left;
+    width: 100%;
+    height:auto;
+    padding: 10px 0 15px 0;
+    border-bottom: 1px transparent;
+  }
+  .social-login a{
+    position:relative;
+    float: left;
+    width:calc(40% - 8px);
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid rgba(0,0,0,0.05);
+    padding: 12px;
+    border-radius: 2px;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin: 0 3%;
+    text-align:center;
+  }
+  .social-login a i{
+    position: relative;
+    float: left;
+    width: 10px;
+    top: 2px;
+  }
 
 #login_btn,#signup_btn{
     height: 35px;
