@@ -1,0 +1,98 @@
+
+
+body {
+    background: url("background1.png") no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+  h1 {
+    font-family: luminari;
+                              
+    font-size: 5rem;
+    text-align: center;
+    margin-top: 5rem;
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  button {
+    padding: 2rem 5rem;
+    border: none;
+    border-radius: 5rem;
+    font-size: 2.5rem;
+    margin: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  }
+  
+  #owner-btn {
+    background-color: #ffa07a;
+    color: white;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+    animation: fadeInLeft 1s ease-in-out;
+  }
+  
+  #user-btn {
+    background-color: #87ceeb;
+    color: white;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+    animation: fadeInRight 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
