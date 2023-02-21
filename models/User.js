@@ -12,13 +12,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    role: {
-        type: Number,
-        min: 1,
-        max: 1,
-        required: true
-        // default: "Users",
-    },
     emailverificationToken: {
         type: String,
         default: "",
@@ -26,6 +19,14 @@ const userSchema = new mongoose.Schema({
     verified: {
         type: Boolean,
         default: false
+    },
+    picture: {
+        type: String,
+        default: ""
+    },
+    loginType: {
+        type: Number,
+        default: 0
     },
 })
 module.exports = mongoose.model('User', userSchema)
