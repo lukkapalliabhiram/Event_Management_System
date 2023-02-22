@@ -1,0 +1,66 @@
+@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200&display=swap);
+
+body{
+    margin: 100;
+  padding: 100;
+  background: #74b8e5;
+  font-family: "Montserrat";
+  font-size: 1.4rem;
+  color: #999;
+  vertical-align: center;
+  justify-content: center;
+  position: center;
+  align-items: center;
+  
+  /* This will hide the Horizontal Scroll bar */
+  overflow-x: hidden;
+  }
+  
+  .bgWhite{
+    background:white;
+    box-shadow:0px 3px 6px 0px #cacaca;
+  }
+  
+  .title{
+    font-weight:600;
+    margin-top:20px;
+    font-size:24px
+  }
+  
+  .customBtn{
+    background: none repeat scroll 0 0 #65addd;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  }
+  .form {
+    min-width: 30rem;
+    background: #fff;
+    border-radius: 4px;
+    padding: 2rem;
+    text-align: center;
+    margin: 5em auto;
+    display: inline-block;
+  }
+  form input{
+    display:inline-block;
+    width:50px;
+    height:50px;
+    text-align:center;
+  }
+  .form-wrap {
+    margin: 1;
+    padding: 1rem 0;
+  }
+ 
+  
+  .form-wrap .customBtn:hover {
+    background :rgb(13, 86, 98);
+  }
+  
