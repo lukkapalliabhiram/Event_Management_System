@@ -2,17 +2,18 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../../../models/User");
-const Owner = require("../../../models/Owner");
+const URL = require("../../../config/keys").URL;
+const User = require("../../dbSchema/login/User");
+const Owner = require("../../dbSchema/login/Owner");
 const keys = require("../../../config/keys");// Load input validation
-const forgotpassword = require("../../validation/forgotpasswd");
+// const forgotpassword = require("../../validation/forgotpasswd");
 const tokenGenerator = require("../../../config/createToken");
 const emailSender = require("../../../config/sendEmails");
 
 
 router.post("/googleSignIn", (req, res) => {
   // Form validation
-  const GoogleUser = require("../../../models/GoogleUser");
+  const GoogleUser = require("../../dbSchema/login/GoogleUser");
   const role_app = req.body.role;
   // console.log(role_app);
   const userProfile = req.body.user._json;  
@@ -76,7 +77,7 @@ router.post("/googleSignIn", (req, res) => {
 // @access Public
 router.post("/signup", (req, res) => {
     // Form validation
-    const validateRegisterInput = require("../../validation/signup");
+    const validateRegisterInput = require("../signup");
     console.log(req.body);
     const { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
@@ -103,18 +104,9 @@ router.post("/signup", (req, res) => {
             bcrypt.hash(newUser.password, salt, async (err, hash) => {
               if (err) throw err;
               newUser.password = hash;
-              const token = tokenGenerator({email:newUser.email})
-              const link = res.hostname + ":3500/api/email/verify?token="+token;
-              const sendMail = await emailSender(newUser.email, "Verification Email", `Please verfiy you email on clicking on this link <a href="${link}">`)
-              if(!sendMail){
-                res.redirect('/login?error=1&message=' + encodeURIComponent('Failed to send the registration Link!'))
-              }
-              else{
-                res.redirect('/login?error=0&message=' + encodeURIComponent('Successfully Registered! Registration  Link sent!'))
-              }
               newUser
                 .save()
-                .then(rees.redirect('/login?error=0&message=' + encodeURIComponent('Successfully Registered!')))
+                .then(res.redirect('/login?error=0&message=' + encodeURIComponent('Successfully Registered!')))
                 .catch(err => console.log(err));
             });
           });
@@ -158,7 +150,7 @@ router.post("/signup", (req, res) => {
 // @access Public
 router.post("/login", (req, res) => {
     // Form validation
-    const validateLoginInput = require("../../validation/login");
+    const validateLoginInput = require("../login");
     const { errors, isValid } = validateLoginInput(req.body);// Check validation
     if (!isValid) {
       return res.status(400).json(errors);
@@ -252,18 +244,93 @@ router.post("/login", (req, res) => {
 // @access Public
 router.post("/forgotpassword", (req, res) => {
   // Form validation
-  const { errors, isValid } = validateLoginInput(req.body);// Check validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
   const email = req.body.email;
-  User.findOne({ email }).then(user => {
+  console.log("Email:"+email);
+  User.findOne({ email }).then(async user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "User not found" });
+      Owner.findOne({ email }).then( async owner => {
+        // Check if user exists
+        console.log("owner")
+        if (!owner) {
+          return res.json({ success: false, message: "User not found" });
+        }
+        else{
+          const token = tokenGenerator({email:owner.email})
+          const link = URL + "/users/verifyToken?token="+token;
+          // console.log(link);
+          const sendMail = await emailSender(owner.email, "Forgot Password", ` To reset password, Please click on this <a href="${link}">link`)
+          console.log(sendMail);
+          if(sendMail){
+            res.json({ success: false, message: "Failed to send the email!" })
+          }
+          else{
+            res.json({ success: true, message: "Email has been sent!" })
+          }
+        }
+      });
+      
     }// Check password
-    
+    else{
+      console.log("user")
+      const fp_token = tokenGenerator({email:user.email})
+      const fp_link = URL + "/users/verifyToken?token="+fp_token;
+      // console.log(fp_link);
+      const fp_sendMail = await emailSender(user.email, "Forgot Password", ` To reset password, Please click on this <a href="${fp_link}">link`)
+      console.log(fp_sendMail);
+      if(fp_sendMail){
+        res.json({ success: false, message: "Failed to send the email!" })
+      }
+      else{
+        res.json({ success: true, message: "Email has been sent!" })
+      }
+    }
   });
 });
+
+router.get("/verifyToken", (req, res) => {
+  // Form validation
+  console.log(req.query);
+  const {token} = req.query;
+  if(!token){
+    return res
+      .status(404)
+      .json({success: false, msg:'Invalid Token!'});
+  }
+  let decodedToken;
+  try{
+    decodedToken = jwt.verify(token, 'secret');
+  }catch(err){
+    return res
+      .status(400)
+      .json({success: false, msg:'Invalid Token!', error: err});
+  }
+  res
+  .status(200)
+  .json({success: true, data : decodedToken});
+});
+
+// router.post("/resetPassword", (req, res) => {
+//   // Form validation
+//   const {token} = res.query;
+//   if(!token){
+//     return res
+//       .status(404)
+//       .json({success: false, msg:'Invalid Token!'});
+//   }
+//   let decodedToken;
+//   try{
+//     decodedToken = jwt.verify(token, 'secret');
+//   }catch(err){
+//     return res
+//       .status(400)
+//       .json({success: false, msg:'Invalid Token!', error: err});
+    
+//   }
+//   res
+//   .status(200)
+//   .json({success: true, data : decodedToken});
+
+// });
 
 module.exports = router;
