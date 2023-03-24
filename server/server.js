@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const db = require("./config/keys").mongoURI;
-const users = require("./models/validation/routes/users");
+const users = require("./models/validation/routes/loginApi");
 const app = express();// Bodyparser middleware
 const GOOGLE_CLIENT_ID =  require("./config/keys").GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET =  require("./config/keys").GOOGLE_CLIENT_SECRET;
@@ -54,7 +54,7 @@ passport.deserializeUser(function(obj, cb) {
 passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: URL+"auth/google/callback"
+  callbackURL: URL+"/auth/google/callback"
 },
   function(accessToken, refreshToken, profile, done) {
     userProfile=profile;
@@ -73,13 +73,13 @@ app.get('/userdata', (req, res) => {
 });
 
 app.get('/',function(req,res) {
-  console.log(req.session);
+  // console.log(req.session);
   if(req.session.login){
     if(req.session.login==0){
       res.redirect('/login');
     }
     else{
-      console.log(req.session.role)
+      // console.log(req.session.role)
       req.session.save();
       // if(req.session.role==1){
       //   res.json(rquser);
@@ -97,7 +97,7 @@ app.get('/',function(req,res) {
 
 app.get('/login',function(req,res) {
   console.log("login")
-  console.log(req.session);
+  // console.log(req.session);
   if(req.session.login){
     req.session.save();
     res.redirect('/');
@@ -109,17 +109,17 @@ app.get('/login',function(req,res) {
 
 app.get('/auth/google', 
   passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+app.get('/forgotPassword',function(req,res) {
+  res.sendFile('pages/forgot_password.html', { root: '.' })});
+  
  
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/error' }),
   function(req, res) {
     // Successful authentication, redirect success.
     const options = {
-<<<<<<< Updated upstream:server.js
-        url: URL+'users/googleSignIn',
-=======
         url: URL+'/users/googleSignIn',
->>>>>>> Stashed changes:server/server.js
         json: true,
         body: {
             user: userProfile,

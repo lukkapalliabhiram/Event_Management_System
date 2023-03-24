@@ -56,6 +56,7 @@ function LoginPage() {
   }
   
   function sendRequest(URL, data){
+    console.log(data);
     return fetch(URL, {
       method: 'POST',
       headers: {
