@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.676c0074.css",
+    "main.js": "/static/js/main.7ad24128.js",
+    "static/js/787.695bf4f7.chunk.js": "/static/js/787.695bf4f7.chunk.js",
+    "static/media/iustadium.jpeg": "/static/media/iustadium.ce5cdef88a79da5f720d.jpeg",
+    "static/media/logo.svg": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/index.html",
+    "main.676c0074.css.map": "/static/css/main.676c0074.css.map",
+    "main.7ad24128.js.map": "/static/js/main.7ad24128.js.map",
+    "787.695bf4f7.chunk.js.map": "/static/js/787.695bf4f7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.676c0074.css",
+    "static/js/main.7ad24128.js"
+  ]
+}
