@@ -7,6 +7,8 @@ import UpReservation from "./Components/upcoming_reservation";
 import FilterSearch from "./Components/Filter_Search";
 import PaymentsPage from "./Components/PaymentPage";
 import BookingPage from "./Components/booking_page";
+import ActivityDetails from "./Components/Activity_details";
+import PlayerDetailsPage from "./Components/Player_details";
 import ConfirmationPage from "./Components/ConfirmationPage";
 import Footer from "./footer";
 import { fetchVenues, fetchActivities, fetchPlayers } from "./api";
@@ -121,10 +123,20 @@ function App() {
           <Route path="/" element={<Home data={data} reservations={reservations} />} />
           <Route
             path="/filter_search"
-            element={<FilterSearch onSearch={handleFilterSearch} data={data} user={user} />} />
+            element={<FilterSearch onSearch={handleFilterSearch} user={user} />} />
           <Route path="/book_venue/:venueIndex" element={<BookingPage data={data} />} />
+          <Route path="/activity_details/:activityIndex" element={<ActivityDetails data={data} />} />
+          <Route path="/player_details/:playerIndex" element={<PlayerDetailsPage data={data} />} />
           <Route
             path="/payments/:venueIndex"
+            element={<PaymentsPage />}
+          />
+          <Route
+            path="/payments/:activityIndex"
+            element={<PaymentsPage />}
+          />
+          <Route
+            path="/payments/:playerIndex"
             element={<PaymentsPage />}
           />
           <Route path="/confirmation/:venueIndex" element={<ConfirmationPage />} />

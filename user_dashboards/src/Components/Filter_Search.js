@@ -1,7 +1,9 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Filter_Search.css";
+import { fetchVenues, fetchActivities, fetchPlayers } from "../api";
+
 
 const initialSearchValues = {
   sportName: "",
@@ -18,7 +20,14 @@ const initialSearchValues = {
   playerAvailability: "",
 };
 
-const FilterSearch = ({ onSearch, data, user }) => {
+const FilterSearch = ({ onSearch, user }) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchVenues().then((venues) => setData(venues));
+    fetchActivities().then((activities) => setData((prevData) => [...prevData, ...activities]));
+    fetchPlayers().then((players) => setData((prevData) => [...prevData, ...players]));
+  }, []);
   const [searchValues, setSearchValues] = useState(initialSearchValues);
   const navigate = useNavigate();
   const [searchCategory, setSearchCategory] = useState("");
@@ -207,6 +216,21 @@ const FilterSearch = ({ onSearch, data, user }) => {
     navigate(`/book_venue/${index}`, { state: { item } });
   };
 
+  const handleBookingA = (e, item, index) => {
+    e.preventDefault();
+    setvenue(item);
+    setindex(index);
+    navigate(`/activity_details/${index}`, { state: { item } });
+  };
+
+  const handleBookingP = (e, item, index) => {
+    e.preventDefault();
+    setvenue(item);
+    setindex(index);
+    navigate(`/player_details/${index}`, { state: { item } });
+  };
+
+
 
   const handleSendMail = (playerEmail) => {
     const currentUser = user;
@@ -268,37 +292,38 @@ const FilterSearch = ({ onSearch, data, user }) => {
               <li key={index}>
                 {searchCategory === 'venues' && (
                   <>
-                  <div><strong>Venue Name:</strong> {item.venueName}</div>
-                  <div><strong>Location:</strong> {item.location}</div>
-                  <div><strong>Sport:</strong> {item.sportName}</div>
-                  <div><strong>Description:</strong> {item.description}</div>
-                  <div><strong>Available Time Slots:</strong></div>
-                  <ul>
-                    {item.availableTimeSlots.map((timeSlot, index) => (
-                      <li key={index}>{timeSlot}</li>
-                    ))}
-                  </ul>
-                  <div><strong>Ratings:</strong> {item.rating} <span className="star-ratings">{Array.from({length: item.rating}, (_, i) => <i key={i} className="fas fa-star"></i>)}</span></div>
-                  <button onClick={(e) => { handleBooking(e,item,index)}} className="btn-book-online">Details</button>
+                    <div><strong>Venue Name:</strong> {item.venueName}</div>
+                    <div><strong>Location:</strong> {item.location}</div>
+                    <div><strong>Sport:</strong> {item.sportName}</div>
+                    <div><strong>Description:</strong> {item.description}</div>
+                    <div><strong>Available Time Slots:</strong></div>
+                    <ul>
+                      {item.availableTimeSlots.map((timeSlot, index) => (
+                        <li key={index}>{timeSlot}</li>
+                      ))}
+                    </ul>
+                    <div><strong>Ratings:</strong> {item.rating} <span className="star-ratings">{Array.from({ length: item.rating }, (_, i) => <i key={i} className="fas fa-star"></i>)}</span></div>
+                    <button onClick={(e) => { handleBooking(e, item, index) }} className="btn-book-online">Details</button>
                   </>
                 )}
                 {searchCategory === 'activities' && (
                   <>
-                  <div><strong>Activity Name:</strong> {item.activityName}</div>
-                  <div><strong>Location:</strong> {item.activityLocation}</div>
-                  <div><strong>Age Range:</strong> {item.ageRange}</div>
-                  <div><strong>Cost:</strong> {item.cost}</div>
-                  <div><strong>Description:</strong> {item.description}</div>
-                  <div><strong>Maximum Capacity Reached:</strong> {item.maximumCapacityReached ? "Yes" : "No"}</div>
-                  <div><strong>Available Time Slots:</strong></div>
-                  <ul>
-                    {item.availableTimeSlots.map((timeSlot, index) => (
-                      <li key={index}>{timeSlot}</li>
-                    ))}
-                  </ul>
-                  <div><strong>Ratings:</strong> {item.rating} <span className="star-ratings">{Array.from({length: item.rating}, (_, i) => <i key={i} className="fas fa-star"></i>)}</span></div>
-                  <Link to="/my_reservations" className="btn-book-online">Details</Link>
-                </>
+                    <div><strong>Activity Name:</strong> {item.activityName}</div>
+                    <div><strong>Location:</strong> {item.activityLocation}</div>
+                    <div><strong>Age Range:</strong> {item.ageRange}</div>
+                    <div><strong>Cost:</strong> {item.cost}</div>
+                    <div><strong>Description:</strong> {item.description}</div>
+                    <div><strong>Maximum Capacity Reached:</strong> {item.maximumCapacityReached ? "Yes" : "No"}</div>
+                    <div><strong>Available Time Slots:</strong></div>
+                    <ul>
+                      {item.availableTimeSlots.map((timeSlot, index) => (
+                        <li>{timeSlot}</li>
+                      ))}
+                    </ul>
+                    index=item._id;
+                    <div><strong>Ratings:</strong> {item.rating} <span className="star-ratings">{Array.from({ length: item.rating }, (_, i) => <i key={i} className="fas fa-star"></i>)}</span></div>
+                    <button onClick={(e) => { handleBookingA(e, item, index) }} className="btn-book-online">Details</button>
+                  </>
                 )}
                 {searchCategory === 'players' && (
                   <>
@@ -311,7 +336,7 @@ const FilterSearch = ({ onSearch, data, user }) => {
                     <div><strong>Description:</strong> {item.description}</div>
                     <div><strong>Email:</strong> {item.emailId}</div>
                     <div> <img className="circle-img" src={item.image} alt={item.playerSportActivity} /></div>
-                    <Link to="/my_reservations" className="btn-book-online">Details</Link>
+                    <button onClick={(e) => { handleBookingP(e, item, index) }} className="btn-book-online">Details</button>
                   </>
                 )}
               </li>

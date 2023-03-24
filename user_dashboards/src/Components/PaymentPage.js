@@ -19,9 +19,13 @@ function PaymentsPage() {
         <h2>{venue.venueName}</h2>
         <div>
           <strong>Location:</strong> {venue.location}
+          {venue.address}
+          {venue.activityLocation}
         </div>
         <div>
           <strong>Sport:</strong> {venue.sportName}
+          {venue.activityName}
+          {venue.playerSportActivity}
         </div>
         <div>
           <strong>Description:</strong> {venue.description}

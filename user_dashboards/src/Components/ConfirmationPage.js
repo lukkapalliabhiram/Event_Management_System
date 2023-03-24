@@ -10,9 +10,13 @@ function ConfirmationPage() {
         <h3>{venue.venueName}</h3>
         <div>
           <strong>Location:</strong> {venue.location}
+          {venue.address}
+          {venue.activityLocation}
         </div>
         <div>
           <strong>Sport:</strong> {venue.sportName}
+          {venue.activityName}
+          {venue.playerSportActivity}
         </div>
         <div>
           <strong>Time Slot:</strong> {bookingTime}
